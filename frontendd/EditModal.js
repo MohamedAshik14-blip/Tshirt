@@ -1,6 +1,7 @@
+// EditModal.js
 import React, { useState, useEffect } from 'react';
 
-const EditModal = ({ product, onEditProduct, onClose }) => {
+const EditModal = ({ product, onEditProduct }) => {
   const [editedProduct, setEditedProduct] = useState({ ...product });
 
   useEffect(() => {
@@ -17,15 +18,6 @@ const EditModal = ({ product, onEditProduct, onClose }) => {
     const updatedVariants = [...editedProduct.variants];
     updatedVariants[index][field] = value;
     setEditedProduct((prevProduct) => ({ ...prevProduct, variants: updatedVariants }));
-  };
-
-  const handleEditProduct = () => {
-    onEditProduct(editedProduct);
-  };
-
-  const handleClose = () => {
-    onEditProduct(editedProduct);
-    
   };
 
   return (
@@ -77,10 +69,34 @@ const EditModal = ({ product, onEditProduct, onClose }) => {
           </div>
         ))}
 
-        <button onClick={handleEditProduct}>Save Changes</button>
-        <button className="edit-modal-close" onClick={handleClose}>
-          Close
-        </button>
+        {/* Add Image1 and Image2 fields */}
+        <label htmlFor="editedProductImage1">Product Image  URL:</label>
+        <input
+          type="text"
+          id="editedProductImage1"
+          name="image"
+          value={editedProduct.image}
+          onChange={handleInputChange}
+        />
+        <label htmlFor="editedProductImage1">Product Image 1 URL:</label>
+        <input
+          type="text"
+          id="editedProductImage1"
+          name="image1"
+          value={editedProduct.image1}
+          onChange={handleInputChange}
+        />
+
+        <label htmlFor="editedProductImage2">Product Image 2 URL:</label>
+        <input
+          type="text"
+          id="editedProductImage2"
+          name="image2"
+          value={editedProduct.image2}
+          onChange={handleInputChange}
+        />
+
+        <button onClick={() => onEditProduct(editedProduct)}>Save Changes</button>
       </div>
     </div>
   );
