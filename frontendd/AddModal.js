@@ -3,20 +3,23 @@ import React, { useState } from 'react';
 const AddModal = ({ onAddProduct, userRole,onClose  }) => {
   // Check if the user has admin role before rendering the AddModal
   
-  const [newProduct, setNewProduct] = useState({
-    productId: '', // Add productId field
-    name: '',
-    price: 0,
-    image: '',
-    category: '',
-    brand: '',
-    variants: [],
-  });
+ const [newProduct, setNewProduct] = useState({
+  productId: '',
+  name: '',
+  price: 0,
+  image: '',
+  image1: '', // New field
+  image2: '', // New field
+  category: '',
+  brand: '',
+  variants: [],
+});
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewProduct((prevProduct) => ({ ...prevProduct, [name]: value }));
-  };
+ const handleInputChange = (e) => {
+  const { name, value } = e.target;
+  setNewProduct((prevProduct) => ({ ...prevProduct, [name]: value }));
+};
+
 
   const handleAddVariant = () => {
     // Add a new variant to the variants array
@@ -91,6 +94,25 @@ const AddModal = ({ onAddProduct, userRole,onClose  }) => {
         value={newProduct.image}
         onChange={handleInputChange}
       />
+      
+      <label htmlFor="productImage1">Product Image 1 URL:</label>
+<input
+  type="text"
+  id="productImage1"
+  name="image1"
+  value={newProduct.image1}
+  onChange={handleInputChange}
+/>
+
+<label htmlFor="productImage2">Product Image 2 URL:</label>
+<input
+  type="text"
+  id="productImage2"
+  name="image2"
+  value={newProduct.image2}
+  onChange={handleInputChange}
+/>
+
       <label htmlFor="productCategory">Product Category:</label>
       <input
         type="text"
