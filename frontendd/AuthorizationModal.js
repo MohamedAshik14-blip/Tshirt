@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
-import './App.css'; // Create a separate CSS file for modal styles
+import './App.scss'; // Create a separate CSS file for modal styles
 
-const AuthorizationModal = ({ isOpen, onClose, onSuccess }) => {
+const AuthorizationModal = ({ isOpen, onClose, onSuccess,updateProducts }) => {
   const initialUserData = {
     username: '',
     email: '',
@@ -74,6 +74,29 @@ const AuthorizationModal = ({ isOpen, onClose, onSuccess }) => {
     }));
   };
 
+
+const handleLoginAsGuest = async () => {
+  try {
+    // Simulate guest login by sending a request to get all products without authentication
+    const response = await axios.get('http://localhost:3000/api/products');
+
+    // Assuming you have an onSuccess callback that handles successful login
+    onSuccess('Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWNjYWYyZGYyNzk5ZWYwMTQxMTViMDMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3MDg4MTc3NzIsImV4cCI6MTcxNjU5Mzc3Mn0.rVDWm_sSb_IG96TSyZwl9E9bWosDY7gCZcEubAHs_Ew', 'guest', 'guest');
+
+    // Close the modal after successful login
+    onClose();
+
+    // Update the product list with the retrieved products
+    // Assuming you have a function to update the products in your component state
+  updateProducts(response.data);
+  } catch (error) {
+    console.error('Guest login failed:', error);
+  }
+};
+
+
+
+
   return (
     <div className={`authorization-modal ${isOpen ? 'open' : ''}`}>
       <div className="modal-overlay" onClick={onClose}>
@@ -121,44 +144,44 @@ const AuthorizationModal = ({ isOpen, onClose, onSuccess }) => {
                   required
                 />
               </label>
-             {isRegister && (
-  <>
-    {!userData.role && (
-      <label>
-        Profile Image:
-        <input
-          type="text"
-          name="profileImage"
-          value={userData.profileImage}
-          onChange={handleChange}
-        />
-      </label>
-    )}
-    {userData.role && userData.role === 'admin' && (
-      <label>
-        Role:
-        <input
-          type="text"
-          name="role"
-          value={userData.role}
-          onChange={handleChange}
-          required
-        />
-      </label>
-    )}
-    {userData.role && (
-      <label>
-        Profile Image:
-        <input
-          type="text"
-          name="profileImage"
-          value={userData.profileImage}
-          onChange={handleChange}
-        />
-      </label>
-    )}
-  </>
-)}
+              {isRegister && (
+                <>
+                  {!userData.role && (
+                    <label>
+                      Profile Image:
+                      <input
+                        type="text"
+                        name="profileImage"
+                        value={userData.profileImage}
+                        onChange={handleChange}
+                      />
+                    </label>
+                  )}
+                  {userData.role && userData.role === 'admin' && (
+                    <label>
+                      Role:
+                      <input
+                        type="text"
+                        name="role"
+                        value={userData.role}
+                        onChange={handleChange}
+                        required
+                      />
+                    </label>
+                  )}
+                  {userData.role && (
+                    <label>
+                      Profile Image:
+                      <input
+                        type="text"
+                        name="profileImage"
+                        value={userData.profileImage}
+                        onChange={handleChange}
+                      />
+                    </label>
+                  )}
+                </>
+              )}
               <button type="submit">{isRegister ? 'Register' : 'Login'}</button>
               <p className="toggle-register" onClick={handleToggleRegister}>
                 {isRegister
@@ -166,9 +189,14 @@ const AuthorizationModal = ({ isOpen, onClose, onSuccess }) => {
                   : "Don't have an account? Register"}
               </p>
               {!isRegister && (
-                <p className="toggle-register" onClick={handleToggleAdminRegister}>
-                  Register as Admin
-                </p>
+                <>
+                  <p className="toggle-register" onClick={handleToggleAdminRegister}>
+                    Register as Admin
+                  </p>
+                  <p className="toggle-register" onClick={handleLoginAsGuest}>
+                    Login as Guest
+                  </p>
+                </>
               )}
             </form>
           </div>
